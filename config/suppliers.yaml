@@ -1,0 +1,48 @@
+# Реестр поставщиков из docs/ПОСТАВЩИКИ.xlsx (postavshchiki.xlsx).
+# id = supplier_id в POST /v1/prices/lookup.
+suppliers:
+  - id: blum
+    name: BLUM
+    base_url: https://blum-msk.ru/
+    enabled: true
+    parser_module: blum
+
+  - id: mdm-complect
+    name: МДМ
+    base_url: https://www.mdm-complect.ru/
+    enabled: false
+    parser_module: mdm_complect
+    disabled_reason: "SUPPLIER_BLOCKED: live captcha/anti-bot; обход запрещён. Адаптер+snapshot оставлены для локального разбора."
+
+  - id: kvadrat
+    name: КВАДРАТ
+    base_url: https://spkvadrat.ru/
+    enabled: true
+    parser_module: kvadrat
+
+  - id: boyard
+    name: Боярд
+    base_url: https://boyard-chel.biz/
+    enabled: true
+    parser_module: boyard
+
+  - id: dinastiya
+    name: Династия
+    base_url: https://dinas1.ru/
+    enabled: false
+    parser_module: dinastiya
+    disabled_reason: "Адаптер-заготовка; нет стабильного whitelist / captcha-риск"
+
+  - id: makmart
+    name: МакМарт
+    base_url: https://makmart.ru/
+    enabled: false
+    parser_module: makmart
+    disabled_reason: "SUPPLIER_BLOCKED риск / адаптер не доведён до ok"
+
+  - id: nt-74
+    name: Новые Технологии
+    base_url: https://www.nt-74.ru/
+    enabled: false
+    parser_module: nt74
+    disabled_reason: "Audit only; рабочий адаптер не реализован"

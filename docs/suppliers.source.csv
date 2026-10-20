@@ -1,0 +1,8 @@
+id,name,base_url,enabled,parser_module,notes
+blum,BLUM,https://blum-msk.ru/,true,blum,"Петли, системы выдвижения, направляющие, подъёмные механизмы"
+mdm-complect,МДМ,https://www.mdm-complect.ru/,false,mdm_complect,"Live captcha → enabled false; snapshot адаптер есть"
+kvadrat,КВАДРАТ,https://spkvadrat.ru/,true,kvadrat,"Фурнитура, электрика, плиты, кромка, компакт, ручки"
+boyard,Боярд,https://boyard-chel.biz/,true,boyard,"Петли, системы выдвижения, направляющие, подъёмные механизмы"
+dinastiya,Династия,https://dinas1.ru/,false,dinastiya,"Столешницы, компакт плиты HPL — stub"
+makmart,МакМарт,https://makmart.ru/,false,makmart,"Фурнитура — audit; anti-bot риск"
+nt-74,Новые Технологии,https://www.nt-74.ru/,false,nt74,"Фурнитура — audit only"

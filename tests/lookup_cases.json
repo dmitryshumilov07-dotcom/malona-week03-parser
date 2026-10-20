@@ -1,0 +1,139 @@
+[
+  {
+    "name": "blum_ok",
+    "request": {
+      "request_id": "case-blum-ok-1",
+      "supplier_id": "blum",
+      "query": {
+        "article": "71B3550",
+        "brand": "BLUM",
+        "url": "https://blum-msk.ru/catalog/demo/71b3550"
+      },
+      "options": { "need_stock": true, "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "ok", "price_min": 1 }
+  },
+  {
+    "name": "blum_not_found",
+    "request": {
+      "request_id": "case-blum-nf-1",
+      "supplier_id": "blum",
+      "query": { "article": "UNKNOWN-BLUM" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "not_found", "error_code": "PRODUCT_NOT_FOUND" }
+  },
+  {
+    "name": "blum_ambiguous",
+    "request": {
+      "request_id": "case-blum-amb-1",
+      "supplier_id": "blum",
+      "query": { "article": "71B3550" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "ambiguous", "error_code": "MULTIPLE_MATCHES" }
+  },
+  {
+    "name": "mdm_disabled_captcha",
+    "request": {
+      "request_id": "case-mdm-disabled",
+      "supplier_id": "mdm-complect",
+      "query": {
+        "article": "MDM-DEMO-001",
+        "brand": "MDM",
+        "url": "https://www.mdm-complect.ru/catalog/demo-product-001"
+      },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 422, "status": "error", "error_code": "SUPPLIER_BLOCKED" }
+  },
+  {
+    "name": "kvadrat_ok",
+    "request": {
+      "request_id": "case-kvadrat-ok-1",
+      "supplier_id": "kvadrat",
+      "query": {
+        "article": "KV-SLIDE-450",
+        "brand": "KVADRAT",
+        "url": "https://spkvadrat.ru/catalog/demo/kv-slide-450"
+      },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "ok", "price_min": 1 }
+  },
+  {
+    "name": "kvadrat_not_found",
+    "request": {
+      "request_id": "case-kvadrat-nf-1",
+      "supplier_id": "kvadrat",
+      "query": { "article": "NO-SUCH-SKU", "brand": "TEST" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "not_found", "error_code": "PRODUCT_NOT_FOUND" }
+  },
+  {
+    "name": "boyard_ok",
+    "request": {
+      "request_id": "case-boyard-ok-1",
+      "supplier_id": "boyard",
+      "query": {
+        "article": "BOYARD-H300",
+        "brand": "BOYARD",
+        "url": "https://boyard-chel.biz/catalog/demo/boyard-h300"
+      },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "ok", "price_min": 1 }
+  },
+  {
+    "name": "unknown_supplier",
+    "request": {
+      "request_id": "case-unknown-sup",
+      "supplier_id": "no-such-supplier",
+      "query": { "article": "71B3550" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 404 }
+  },
+  {
+    "name": "disabled_makmart",
+    "request": {
+      "request_id": "case-makmart-disabled",
+      "supplier_id": "makmart",
+      "query": { "article": "X1" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 422, "status": "error", "error_code": "SUPPLIER_BLOCKED" }
+  },
+  {
+    "name": "out_of_whitelist",
+    "request": {
+      "request_id": "case-whitelist",
+      "supplier_id": "blum",
+      "query": { "article": "RANDOM-NOT-IN-LIST" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 200, "status": "not_found", "error_code": "PRODUCT_NOT_FOUND" }
+  },
+  {
+    "name": "missing_article_and_url",
+    "request": {
+      "request_id": "case-bad-query",
+      "supplier_id": "blum",
+      "query": { "brand": "BLUM" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 422 }
+  },
+  {
+    "name": "unauthorized",
+    "auth": false,
+    "request": {
+      "request_id": "case-unauth",
+      "supplier_id": "blum",
+      "query": { "article": "71B3550", "brand": "BLUM" },
+      "options": { "currency": "RUB" }
+    },
+    "expect": { "http_status": 401 }
+  }
+]

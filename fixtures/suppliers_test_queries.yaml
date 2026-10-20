@@ -1,0 +1,60 @@
+# Whitelist тестовых запросов. Парсер принимает только эти URL/артикулы.
+queries:
+  - supplier_id: blum
+    article: "71B3550"
+    brand: "BLUM"
+    url: "https://blum-msk.ru/catalog/demo/71b3550"
+    snapshot: "fixtures/pages/blum/71b3550.html"
+    expect_status: ok
+
+  - supplier_id: blum
+    article: "UNKNOWN-BLUM"
+    brand: null
+    url: null
+    expect_status: not_found
+
+  - supplier_id: blum
+    article: "71B3550"
+    brand: null
+    url: null
+    expect_status: ambiguous
+    note: "Без brand — несколько кандидатов в демо-адаптере"
+
+  - supplier_id: mdm-complect
+    article: "MDM-DEMO-001"
+    brand: "MDM"
+    url: "https://www.mdm-complect.ru/catalog/demo-product-001"
+    snapshot: "fixtures/pages/mdm-complect/demo-001.html"
+    expect_status: ok
+
+  - supplier_id: mdm-complect
+    article: "UNKNOWN"
+    brand: null
+    url: null
+    expect_status: not_found
+
+  - supplier_id: kvadrat
+    article: "KV-SLIDE-450"
+    brand: "KVADRAT"
+    url: "https://spkvadrat.ru/catalog/demo/kv-slide-450"
+    snapshot: "fixtures/pages/kvadrat/kv-slide-450.html"
+    expect_status: ok
+
+  - supplier_id: kvadrat
+    article: "NO-SUCH-SKU"
+    brand: "TEST"
+    url: null
+    expect_status: not_found
+
+  - supplier_id: boyard
+    article: "BOYARD-H300"
+    brand: "BOYARD"
+    url: "https://boyard-chel.biz/catalog/demo/boyard-h300"
+    snapshot: "fixtures/pages/boyard/h300.html"
+    expect_status: ok
+
+  - supplier_id: boyard
+    article: "MISSING"
+    brand: null
+    url: null
+    expect_status: not_found

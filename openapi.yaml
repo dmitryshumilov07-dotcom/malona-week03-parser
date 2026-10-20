@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: Supplier Price Parser API
+  version: 1.0.0
+  description: HTTP JSON API парсера цен для бота-сметчика (неделя 3).
+servers:
+  - url: http://127.0.0.1:8000
+    description: Local staging
+paths:
+  /v1/health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /v1/suppliers:
+    get:
+      summary: List suppliers
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Supplier registry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuppliersResponse"
+        "401":
+          description: Unauthorized
+  /v1/prices/lookup:
+    post:
+      summary: Lookup price by supplier + article/url
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: header
+          name: X-Request-Id
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LookupRequest"
+            example:
+              request_id: 550e8400-e29b-41d4-a716-446655440000
+              supplier_id: blum
+              query:
+                article: "71B3550"
+                brand: BLUM
+                url: https://blum-msk.ru/catalog/demo/71b3550
+              options:
+                need_stock: true
+                currency: RUB
+                timeout_ms: 25000
+      responses:
+        "200":
+          description: Business result (ok / not_found / ambiguous)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LookupResponse"
+        "400":
+          description: Invalid JSON / missing article and url
+        "401":
+          description: Unauthorized
+        "404":
+          description: Unknown supplier_id
+        "422":
+          description: Supplier blocked / parse error
+        "429":
+          description: Rate limit
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+        "504":
+          description: Supplier timeout
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        version:
+          type: string
+    SupplierPublic:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        enabled: { type: boolean }
+    SuppliersResponse:
+      type: object
+      properties:
+        suppliers:
+          type: array
+          items:
+            $ref: "#/components/schemas/SupplierPublic"
+    LookupRequest:
+      type: object
+      required: [request_id, supplier_id, query]
+      properties:
+        request_id: { type: string }
+        supplier_id: { type: string }
+        query:
+          type: object
+          properties:
+            article: { type: string, nullable: true }
+            brand: { type: string, nullable: true }
+            name: { type: string, nullable: true }
+            oem: { type: string, nullable: true }
+            url: { type: string, nullable: true }
+        options:
+          type: object
+          properties:
+            need_stock: { type: boolean }
+            currency: { type: string }
+            timeout_ms: { type: integer }
+    LookupResponse:
+      type: object
+      required: [request_id, status, supplier_id]
+      properties:
+        request_id: { type: string }
+        status:
+          type: string
+          enum: [ok, not_found, ambiguous, error]
+        supplier_id: { type: string }
+        matched: { type: object, nullable: true }
+        price: { type: object, nullable: true }
+        stock: { type: object, nullable: true }
+        meta: { type: object, nullable: true }
+        candidates:
+          type: array
+          nullable: true
+          items: { type: object }
+        error: { type: object, nullable: true }
